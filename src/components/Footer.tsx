@@ -1,4 +1,8 @@
+import { useLanguage } from "@/hooks/use-language";
+
 const Footer = () => {
+  const { t } = useLanguage();
+
   return (
     <footer className="border-t border-border/50 py-8">
       <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
@@ -7,7 +11,7 @@ const Footer = () => {
           <span className="text-foreground">-KODES</span>
         </div>
         <p className="text-sm text-muted-foreground">
-          © {new Date().getFullYear()} OZ-KODES. Todos os direitos reservados.
+          © {new Date().getFullYear()} OZ-KODES. {t.footer.rights}
         </p>
       </div>
     </footer>

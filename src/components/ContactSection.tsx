@@ -1,10 +1,12 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { MapPin, Phone, Mail } from "lucide-react";
+import { useLanguage } from "@/hooks/use-language";
 
 const ContactSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const { t } = useLanguage();
 
   return (
     <section id="contact" className="py-24 md:py-32">
@@ -16,11 +18,11 @@ const ContactSection = () => {
           className="text-center mb-16"
         >
           <p className="text-primary font-display text-sm tracking-[0.2em] uppercase mb-4">
-            Contacto
+            {t.contact.eyebrow}
           </p>
           <h2 className="font-display text-3xl md:text-4xl font-bold">
-            Fale{" "}
-            <span className="text-gradient">Connosco</span>
+            {t.contact.titlePrefix}
+            <span className="text-gradient">{t.contact.titleHighlight}</span>
           </h2>
         </motion.div>
 
@@ -37,10 +39,10 @@ const ContactSection = () => {
                 <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mx-auto md:mx-0 mb-4">
                   <MapPin className="w-5 h-5 text-primary" />
                 </div>
-                <h3 className="font-display font-semibold text-foreground mb-2">Morada</h3>
+                <h3 className="font-display font-semibold text-foreground mb-2">{t.contact.addressLabel}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Rua Salvador Allende<br />
-                  Luanda, Angola
+                  {t.contact.addressLines[0]}<br />
+                  {t.contact.addressLines[1]}
                 </p>
               </div>
 
@@ -49,7 +51,7 @@ const ContactSection = () => {
                 <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mx-auto md:mx-0 mb-4">
                   <Phone className="w-5 h-5 text-primary" />
                 </div>
-                <h3 className="font-display font-semibold text-foreground mb-2">Telefone</h3>
+                <h3 className="font-display font-semibold text-foreground mb-2">{t.contact.phoneLabel}</h3>
                 <a
                   href="tel:+244923306919"
                   className="text-sm text-muted-foreground hover:text-primary transition-colors"
@@ -63,7 +65,7 @@ const ContactSection = () => {
                 <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mx-auto md:mx-0 mb-4">
                   <Mail className="w-5 h-5 text-primary" />
                 </div>
-                <h3 className="font-display font-semibold text-foreground mb-2">Email</h3>
+                <h3 className="font-display font-semibold text-foreground mb-2">{t.contact.emailLabel}</h3>
                 <a
                   href="mailto:geral@ozkodes.com"
                   className="text-sm text-muted-foreground hover:text-primary transition-colors"
@@ -76,13 +78,13 @@ const ContactSection = () => {
             {/* CTA */}
             <div className="mt-10 pt-8 border-t border-border/50 text-center">
               <p className="text-muted-foreground mb-6">
-                Estamos prontos para ajudar no seu próximo projecto.
+                {t.contact.ctaText}
               </p>
               <a
                 href="mailto:geral@ozkodes.com"
                 className="inline-block px-8 py-4 rounded-lg font-display font-semibold text-sm tracking-wide bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
               >
-                Enviar Mensagem
+                {t.contact.ctaButton}
               </a>
             </div>
           </div>

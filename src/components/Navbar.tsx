@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
-const navItems = [
-  { label: "Início", href: "#hero" },
-  { label: "Sobre", href: "#about" },
-  { label: "Serviços", href: "#services" },
-  { label: "Equipamentos", href: "#equipment" },
-  { label: "Contacto", href: "#contact" },
-];
+import { useLanguage } from "@/hooks/use-language";
+import type { Language } from "@/lib/translations";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { t, language, setLanguage } = useLanguage();
+
+  const navItems = t.nav.items;
+  const languages: { code: Language; label: string }[] = [
+    { code: "pt", label: "PT" },
+    { code: "en", label: "EN" },
+    { code: "fr", label: "FR" },
+  ];
 
   const scrollTo = (href: string) => {
     setIsOpen(false);
@@ -32,19 +34,43 @@ const Navbar = () => {
         </a>
 
         {/* Desktop nav */}
-        <ul className="hidden md:flex items-center gap-8">
-          {navItems.map((item) => (
-            <li key={item.href}>
-              <a
-                href={item.href}
-                onClick={(e) => { e.preventDefault(); scrollTo(item.href); }}
-                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-300"
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+        <div className="hidden md:flex items-center gap-6">
+          <ul className="flex items-center gap-8">
+            {navItems.map((item) => (
+              <li key={item.href}>
+                <a
+                  href={item.href}
+                  onClick={(e) => { e.preventDefault(); scrollTo(item.href); }}
+                  className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-300"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <div className="flex items-center rounded-full border border-border/60 bg-card/70 p-1">
+            <span className="sr-only">{t.nav.languageLabel}</span>
+            {languages.map((option) => {
+              const isActive = option.code === language;
+              return (
+                <button
+                  key={option.code}
+                  type="button"
+                  onClick={() => setLanguage(option.code)}
+                  aria-pressed={isActive}
+                  className={`px-3 py-1 text-xs font-semibold rounded-full transition-colors ${
+                    isActive
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
         {/* Mobile toggle */}
         <button
@@ -78,6 +104,32 @@ const Navbar = () => {
                 </li>
               ))}
             </ul>
+
+            <div className="px-6 pb-6">
+              <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-3">
+                {t.nav.languageLabel}
+              </p>
+              <div className="flex items-center gap-2">
+                {languages.map((option) => {
+                  const isActive = option.code === language;
+                  return (
+                    <button
+                      key={option.code}
+                      type="button"
+                      onClick={() => setLanguage(option.code)}
+                      aria-pressed={isActive}
+                      className={`px-3 py-2 text-xs font-semibold rounded-lg border transition-colors ${
+                        isActive
+                          ? "bg-primary text-primary-foreground border-primary/50"
+                          : "text-muted-foreground border-border/60 hover:text-foreground"
+                      }`}
+                    >
+                      {option.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

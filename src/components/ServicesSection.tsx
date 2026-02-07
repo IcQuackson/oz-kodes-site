@@ -1,49 +1,17 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Plane, MapPin, Camera, Mountain, Compass, Ruler } from "lucide-react";
-
-const services = [
-  {
-    icon: Plane,
-    title: "Levantamento Aéreo",
-    description:
-      "Voos pré-programados com câmaras on-board até 400m de altitude, garantindo cobertura total e eficiente.",
-  },
-  {
-    icon: Camera,
-    title: "Fotogrametria",
-    description:
-      "Produção de ortofotomapas, modelos 3D e nuvens de pontos com alta resolução e precisão.",
-  },
-  {
-    icon: MapPin,
-    title: "Mapeamento Digital",
-    description:
-      "Soluções completas de mapeamento digital para projectos de engenharia, urbanismo e cadastro.",
-  },
-  {
-    icon: Mountain,
-    title: "Modelos de Terreno",
-    description:
-      "Geração de modelos digitais de terreno (MDT) e superfície (MDS) para análise topográfica avançada.",
-  },
-  {
-    icon: Compass,
-    title: "Topografia de Apoio",
-    description:
-      "Equipas de topografia com GPS e Estações Totais Robotizadas para suporte aos produtos de voo.",
-  },
-  {
-    icon: Ruler,
-    title: "Levantamento Topográfico",
-    description:
-      "Serviços clássicos de topografia com equipamento de precisão para apoio a todo tipo de projecto.",
-  },
-];
+import { useLanguage } from "@/hooks/use-language";
 
 const ServicesSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const { t } = useLanguage();
+  const serviceIcons = [Plane, Camera, MapPin, Mountain, Compass, Ruler];
+  const services = t.services.items.map((item, index) => ({
+    ...item,
+    icon: serviceIcons[index],
+  }));
 
   return (
     <section id="services" className="py-24 md:py-32 relative">
@@ -58,11 +26,11 @@ const ServicesSection = () => {
           className="text-center mb-16"
         >
           <p className="text-primary font-display text-sm tracking-[0.2em] uppercase mb-4">
-            Serviços
+            {t.services.eyebrow}
           </p>
           <h2 className="font-display text-3xl md:text-4xl font-bold">
-            Soluções{" "}
-            <span className="text-gradient">Completas</span>
+            {t.services.titlePrefix}
+            <span className="text-gradient">{t.services.titleHighlight}</span>
           </h2>
         </motion.div>
 

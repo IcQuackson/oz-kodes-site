@@ -1,18 +1,13 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import topographyImage from "@/assets/topography-team.jpg";
-
-const capabilities = [
-  { label: "Câmaras on-board de alta resolução", detail: "Imagens de precisão para fotogrametria" },
-  { label: "Voo pré-programado autónomo", detail: "Tecto máximo de 400m de altitude" },
-  { label: "Autonomia superior a 50 minutos", detail: "Múltiplos tipos de VANT disponíveis" },
-  { label: "Aterragem em espaços reduzidos", detail: "Superfícies irregulares suportadas" },
-  { label: "GPS e Estações Totais Robotizadas", detail: "Apoio topográfico completo" },
-];
+import { useLanguage } from "@/hooks/use-language";
 
 const EquipmentSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const { t } = useLanguage();
+  const capabilities = t.equipment.capabilities;
 
   return (
     <section id="equipment" className="py-24 md:py-32">
@@ -28,7 +23,7 @@ const EquipmentSection = () => {
             <div className="rounded-2xl overflow-hidden glow-border">
               <img
                 src={topographyImage}
-                alt="Equipa de topografia da OZ-KODES em campo"
+                alt={t.equipment.imageAlt}
                 className="w-full h-[400px] md:h-[500px] object-cover"
                 loading="lazy"
               />
@@ -43,11 +38,11 @@ const EquipmentSection = () => {
             className="order-1 lg:order-2"
           >
             <p className="text-primary font-display text-sm tracking-[0.2em] uppercase mb-4">
-              Equipamentos
+              {t.equipment.eyebrow}
             </p>
             <h2 className="font-display text-3xl md:text-4xl font-bold mb-8 leading-tight">
-              Tecnologia de{" "}
-              <span className="text-gradient">Ponta</span>
+              {t.equipment.titlePrefix}
+              <span className="text-gradient">{t.equipment.titleHighlight}</span>
             </h2>
 
             <div className="space-y-5">
