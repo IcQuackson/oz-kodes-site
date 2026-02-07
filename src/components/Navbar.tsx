@@ -3,17 +3,25 @@ import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/hooks/use-language";
 import type { Language } from "@/lib/translations";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { t, language, setLanguage } = useLanguage();
 
   const navItems = t.nav.items;
-  const languages: { code: Language; label: string }[] = [
-    { code: "pt", label: "PT" },
-    { code: "en", label: "EN" },
-    { code: "fr", label: "FR" },
+  const languages: { code: Language; label: string; flag: string }[] = [
+    { code: "pt", label: "PT", flag: "🇵🇹" },
+    { code: "en", label: "EN", flag: "🇬🇧" },
+    { code: "fr", label: "FR", flag: "🇫🇷" },
   ];
+  const currentLanguage = languages.find((option) => option.code === language) ?? languages[0];
 
   const scrollTo = (href: string) => {
     setIsOpen(false);
@@ -23,7 +31,7 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
-      <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="w-full px-6 py-4 flex items-center justify-between">
         <a
           href="#hero"
           onClick={(e) => { e.preventDefault(); scrollTo("#hero"); }}
@@ -49,27 +57,28 @@ const Navbar = () => {
             ))}
           </ul>
 
-          <div className="flex items-center rounded-full border border-border/60 bg-card/70 p-1">
-            <span className="sr-only">{t.nav.languageLabel}</span>
-            {languages.map((option) => {
-              const isActive = option.code === language;
-              return (
-                <button
-                  key={option.code}
-                  type="button"
-                  onClick={() => setLanguage(option.code)}
-                  aria-pressed={isActive}
-                  className={`px-3 py-1 text-xs font-semibold rounded-full transition-colors ${
-                    isActive
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {option.label}
-                </button>
-              );
-            })}
-          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                type="button"
+                className="flex items-center gap-2 rounded-full border border-border/60 bg-card/70 px-3 py-1 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
+                aria-label={t.nav.languageLabel}
+              >
+                <span className="text-base leading-none">{currentLanguage.flag}</span>
+                <span>{currentLanguage.label}</span>
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuRadioGroup value={language} onValueChange={(value) => setLanguage(value as Language)}>
+                {languages.map((option) => (
+                  <DropdownMenuRadioItem key={option.code} value={option.code} className="gap-2">
+                    <span className="text-base leading-none">{option.flag}</span>
+                    <span>{option.label}</span>
+                  </DropdownMenuRadioItem>
+                ))}
+              </DropdownMenuRadioGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         {/* Mobile toggle */}
@@ -109,26 +118,28 @@ const Navbar = () => {
               <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-3">
                 {t.nav.languageLabel}
               </p>
-              <div className="flex items-center gap-2">
-                {languages.map((option) => {
-                  const isActive = option.code === language;
-                  return (
-                    <button
-                      key={option.code}
-                      type="button"
-                      onClick={() => setLanguage(option.code)}
-                      aria-pressed={isActive}
-                      className={`px-3 py-2 text-xs font-semibold rounded-lg border transition-colors ${
-                        isActive
-                          ? "bg-primary text-primary-foreground border-primary/50"
-                          : "text-muted-foreground border-border/60 hover:text-foreground"
-                      }`}
-                    >
-                      {option.label}
-                    </button>
-                  );
-                })}
-              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    type="button"
+                    className="flex items-center gap-2 rounded-lg border border-border/60 bg-card/70 px-3 py-2 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label={t.nav.languageLabel}
+                  >
+                    <span className="text-base leading-none">{currentLanguage.flag}</span>
+                    <span>{currentLanguage.label}</span>
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start">
+                  <DropdownMenuRadioGroup value={language} onValueChange={(value) => setLanguage(value as Language)}>
+                    {languages.map((option) => (
+                      <DropdownMenuRadioItem key={option.code} value={option.code} className="gap-2">
+                        <span className="text-base leading-none">{option.flag}</span>
+                        <span>{option.label}</span>
+                      </DropdownMenuRadioItem>
+                    ))}
+                  </DropdownMenuRadioGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </motion.div>
         )}
